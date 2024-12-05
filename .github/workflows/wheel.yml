@@ -9,6 +9,7 @@ env:
   PYTHONLDAP_VER: python-ldap-3.4.4
   CIBW_TEST_COMMAND: python -c"import ldap;print(ldap.__version__)"
   CIBW_SKIP: "pp* cp36*"
+  CIBW_BUILD: "cp313-*"
   MSBUILDTREATHIGHERTOOLSVERSIONASCURRENT: 1
 
 jobs:
@@ -35,7 +36,7 @@ jobs:
         shell: cmd
       - run: build_python-ldap.cmd
         shell: cmd
-      - uses: pypa/cibuildwheel@v2.16.2
+      - uses: pypa/cibuildwheel@v2.22.0
         env:
           CIBW_ARCHS_WINDOWS: AMD64
       - uses: actions/upload-artifact@v3
@@ -43,6 +44,7 @@ jobs:
           path: ./wheelhouse/*.whl
   build_x86:
     name: Build x86 wheels
+    if: false
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
