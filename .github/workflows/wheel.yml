@@ -1,10 +1,28 @@
 name: Build python-ldap wheels for Windows
 on:
   workflow_dispatch:
+    inputs:
+      release_title:
+        description: 'Release title'
+        required: true
+      python_ldap_version:
+        description: 'python-ldap version'
+        required: true
+        default: '3.4.4'
+      openldap_version:
+        description: 'OpenLDAP version'
+        required: true
+        default: '2.4.59'
+      openssl_version:
+        description: 'OpenSSL version'
+        required: true
+        default: '3.2.3'
 env:
-  OPENSSL_VER: openssl-3.2.3
-  OPENLDAP_VER: openldap-2.4.59
-  PYTHONLDAP_VER: python-ldap-3.4.4
+  OPENSSL_VER: openssl-${{ github.event.inputs.openssl_version }}
+  OPENLDAP_VER: openldap-${{ github.event.inputs.openldap_version }}
+  PYTHONLDAP_VER: python-ldap-${{ github.event.inputs.python_ldap_version }}
+  TITLE: ${{ github.event.inputs.release_title }}
+  TAG: ${{ github.event.inputs.python_ldap_version }}+LDAP-${{ github.event.inputs.openldap_version }}-SSL-${{ github.event.inputs.openssl_version }}
   CIBW_TEST_COMMAND: python -c"import ldap;print(ldap.__version__)"
   CIBW_SKIP: "pp* cp36*"
   CIBW_BUILD: "cp313-*"
@@ -36,9 +54,10 @@ jobs:
       - uses: pypa/cibuildwheel@v2.22.0
         env:
           CIBW_ARCHS_WINDOWS: AMD64
-      - uses: actions/upload-artifact@v4
-        with:
-          path: ./wheelhouse/*.whl
+      - run: gh release create --draft --title "$TITLE" "$TAG" wheelhouse/*.whl
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build_x86:
     name: Build x86 wheels
     if: false
