@@ -35,9 +35,12 @@ jobs:
           #mingw-w64-x86_64-python mingw-w64-x86_64-python-setuptools
       - run: |
           set -ex
+          pwd
+          env
           curl -L -o "$PYTHONLDAP_VER.tar.gz" "https://github.com/python-ldap/python-ldap/archive/refs/tags/$PYTHONLDAP_VER.tar.gz"
           tar -xf "$PYTHONLDAP_VER.tar.gz" --strip-components=1
-          python setup.py bdist_wheel # python_ldap-3.4.4-cp312-cp312-mingw_x86_64_msvcrt_gnu.whl
+          $pythonLocation/python -m pip install setuptools || :
+          $pythonLocation/python setup.py bdist_wheel # python_ldap-3.4.4-cp312-cp312-mingw_x86_64_msvcrt_gnu.whl
         shell: msys2 {0}
       - run: gh release create --draft --title "$TITLE" "$TAG" dist/*.whl
         shell: bash
