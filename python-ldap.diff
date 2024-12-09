@@ -23,7 +23,7 @@ index fdb32fb..5d66bbf 100644
  # Example for full-featured build:
  # Support for StartTLS/LDAPS, SASL bind and reentrant libldap_r.
 -#libs = ldap_r lber
-+libs = olber32_a oldap32 oldap_r libssl libcrypto ws2_32 gdi32 advapi32 crypt32 user32
++libs = olber32_a oldap32 libssl libcrypto ws2_32 gdi32 advapi32 crypt32 user32
  
  # Installation options
  [install]

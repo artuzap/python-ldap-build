@@ -12,11 +12,11 @@ on:
       openldap_version:
         description: 'OpenLDAP version'
         required: true
-        default: '2.4.59'
+        default: '2.6.9'
       openssl_version:
         description: 'OpenSSL version'
         required: true
-        default: '3.2.3'
+        default: '3.0.15'
 env:
   OPENSSL_VER: openssl-${{ github.event.inputs.openssl_version }}
   OPENLDAP_VER: openldap-${{ github.event.inputs.openldap_version }}
